@@ -7,6 +7,7 @@
 import { create } from 'zustand';
 import type { Color, SimonGameState } from '../shared/types';
 import { socketService } from '../services/socketService';
+import { soundService } from '../services/soundService';
 
 // =============================================================================
 // TYPES
@@ -68,6 +69,7 @@ interface SimonStore {
 
 // Track timer interval (Step 3)
 let timerInterval: number | null = null;
+let lastBeepSecond: number | null = null; // Track last beep to avoid duplicate beeps
 
 export const useSimonStore = create<SimonStore>((set, get) => ({
   // Initial state
@@ -175,6 +177,13 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       const store = get();
       store.stopTimer();
       
+      // 🔊 Play success or error sound
+      if (data.isCorrect) {
+        soundService.playSuccess();
+      } else {
+        soundService.playError();
+      }
+      
       set({
         isInputPhase: false,
         lastResult: {
@@ -194,6 +203,9 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       // Stop timer
       const store = get();
       store.stopTimer();
+      
+      // 🔊 Play timeout sound
+      soundService.playTimeout();
       
       set({
         isInputPhase: false,
@@ -223,6 +235,11 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       const store = get();
       store.stopTimer();
       
+      // 🔊 Play success sound if there's a winner
+      if (data.roundWinner) {
+        soundService.playSuccess();
+      }
+      
       set({
         isInputPhase: false,
         roundResult: {
@@ -248,6 +265,9 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
     socket.on('simon:game_finished', (data: { winner: any; finalScores: any[] }) => {
       console.log('🏆 Game finished:', data);
       
+      // 🔊 Play victory fanfare!
+      soundService.playVictory();
+      
       const scoreboard = data.finalScores
         .map((s: any) => `${s.name}: ${s.score} pts`)
         .join(', ');
@@ -263,6 +283,9 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
     // Listen for player eliminated (Step 4)
     socket.on('simon:player_eliminated', (data: { playerId: string; playerName: string; reason: string }) => {
       console.log('💀 Player eliminated:', data);
+      
+      // 🔊 Play elimination sound
+      soundService.playEliminated();
       
       set({
         message: `${data.playerName} eliminated: ${data.reason}`,
@@ -437,6 +460,13 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
         color = 'yellow';
       }
       
+      // 🔊 Play timer warning beeps at 5, 3, 2, 1 seconds
+      const beepSeconds = [5, 3, 2, 1];
+      if (beepSeconds.includes(remaining) && lastBeepSecond !== remaining) {
+        soundService.playBeep();
+        lastBeepSecond = remaining;
+      }
+      
       set({
         timeoutAt,
         timeoutSeconds,
@@ -451,6 +481,7 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
           clearInterval(timerInterval);
           timerInterval = null;
         }
+        lastBeepSecond = null; // Reset for next round
       }
     };
     
@@ -469,6 +500,7 @@ export const useSimonStore = create<SimonStore>((set, get) => ({
       clearInterval(timerInterval);
       timerInterval = null;
     }
+    lastBeepSecond = null; // Reset beep tracking
     
     set({
       timeoutAt: null,

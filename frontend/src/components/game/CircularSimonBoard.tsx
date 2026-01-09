@@ -5,8 +5,9 @@
  * Replicates the iconic look of the original 1978 Simon game.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Color } from '../../shared/types';
+import { soundService } from '../../services/soundService';
 
 // =============================================================================
 // TYPES
@@ -183,8 +184,35 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
 
   // Track which color in sequence is being shown
   const [sequenceIndex, setSequenceIndex] = useState<number>(-1);
+  
+  // Track if audio is initialized
+  const audioInitialized = useRef(false);
 
-  // Animate sequence when showing - DRAMATIC and SLOW
+  // Initialize audio on first user interaction
+  useEffect(() => {
+    const initAudio = async () => {
+      if (!audioInitialized.current) {
+        await soundService.init();
+        audioInitialized.current = true;
+      }
+    };
+
+    // Try to init immediately (will work if user has interacted)
+    initAudio();
+
+    // Also listen for first click
+    const handleClick = () => {
+      initAudio();
+      document.removeEventListener('click', handleClick);
+    };
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+
+  // Animate sequence when showing - DRAMATIC and SLOW with SOUND
   useEffect(() => {
     if (!isShowingSequence || sequence.length === 0) {
       setActiveColor(null);
@@ -192,7 +220,7 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
       return;
     }
 
-    const SHOW_DURATION = 800;  // How long each color stays lit
+    const SHOW_DURATION = 800;  // How long each color stays lit (matches sound)
     const SHOW_GAP = 400;       // Gap between colors (all dark)
 
     let currentIndex = 0;
@@ -208,6 +236,9 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
       const color = sequence[currentIndex];
       setActiveColor(color);
       setSequenceIndex(currentIndex);
+
+      // 🔊 PLAY COLOR TONE (duration matches visual)
+      soundService.playColor(color, SHOW_DURATION / 1000);
 
       // Vibrate when showing sequence
       if ('vibrate' in navigator) {
@@ -234,6 +265,9 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
   // Handle color button click
   const handleColorClick = (color: Color) => {
     if (disabled || isShowingSequence || !isInputPhase) return;
+
+    // 🔊 PLAY COLOR TONE (short click sound)
+    soundService.playColorClick(color);
 
     if ('vibrate' in navigator) {
       navigator.vibrate(50);

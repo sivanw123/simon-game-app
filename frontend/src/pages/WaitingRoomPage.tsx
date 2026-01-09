@@ -6,12 +6,14 @@
  * - Simon game board during gameplay
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useSimonStore } from '../store/simonStore';
 import { socketService } from '../services/socketService';
+import { soundService } from '../services/soundService';
 import { CircularSimonBoard } from '../components/game/CircularSimonBoard';
 import { Toast } from '../components/ui/Toast';
+import { MuteButton } from '../components/ui/MuteButton';
 
 export function WaitingRoomPage() {
   const { session } = useAuthStore();
@@ -45,6 +47,7 @@ export function WaitingRoomPage() {
   const [isHost, setIsHost] = useState(session?.isHost || false);
   const [players, setPlayers] = useState<any[]>([]);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const lastCountdownValue = useRef<number | null>(null);
   
   // Initialize on mount
   useEffect(() => {
@@ -98,9 +101,16 @@ export function WaitingRoomPage() {
       setRoomStatus('countdown');
       setCountdownValue(data.count);
       
+      // 🔊 Play countdown beep (only once per second)
+      if (lastCountdownValue.current !== data.count) {
+        soundService.playCountdown(data.count);
+        lastCountdownValue.current = data.count;
+      }
+      
       if (data.count === 0) {
         setRoomStatus('active');
         setCountdownValue(null);
+        lastCountdownValue.current = null;
       }
     });
     
@@ -130,11 +140,14 @@ export function WaitingRoomPage() {
   }, [gameCode, playerId]); // Removed initializeListeners & cleanup - they're stable
   
   // Handle start game (host only)
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     console.log('🎮 DEBUG: handleStartGame called');
     console.log('🎮 DEBUG: gameCode:', gameCode);
     console.log('🎮 DEBUG: playerId:', playerId);
     console.log('🎮 DEBUG: isHost:', isHost);
+    
+    // 🔊 Initialize sound on user interaction
+    await soundService.init();
     
     const socket = socketService.getSocket();
     console.log('🎮 DEBUG: socket exists:', !!socket);
@@ -213,6 +226,9 @@ export function WaitingRoomPage() {
   if (roomStatus === 'active' && isGameActive) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-2 sm:p-4">
+        {/* Mute Button */}
+        <MuteButton />
+        
         <div className="flex flex-col items-center w-full max-w-md">
           {/* Step 4: Scoreboard */}
           {isGameActive && Object.keys(scores).length > 0 && (
