@@ -231,18 +231,31 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
       return;
     }
 
-    // CRITICAL: Capture sequence length and round at the start to prevent closure issues
+    // CRITICAL: Capture ALL values at the start to prevent closure issues
     // Store them in variables that won't change during the animation
     // Always use the current props, don't rely on refs that might be stale
     const sequenceLength = sequence.length;
     const sequenceToShow = [...sequence]; // Create a copy to ensure we have the exact sequence
     const currentRound = round; // Capture round value
     
+    // Verify we have a valid sequence
+    if (sequenceLength === 0 || sequenceToShow.length === 0) {
+      console.error(`🎨 ERROR: Invalid sequence! Length: ${sequenceLength}, Array:`, sequenceToShow);
+      return;
+    }
+    
     // Update refs for tracking
     sequenceRef.current = sequenceToShow;
     lastAnimatedRound.current = currentRound;
     
-    console.log(`🎨 Starting sequence animation: Round ${round}, Length: ${sequenceLength}, Sequence:`, sequenceToShow);
+    console.log(`🎨 Starting sequence animation: Round ${currentRound}, Length: ${sequenceLength}, Sequence:`, sequenceToShow);
+    console.log(`🎨 Sequence details:`, {
+      round: currentRound,
+      length: sequenceLength,
+      colors: sequenceToShow,
+      isShowingSequence,
+      sequencePropLength: sequence.length
+    });
 
     const SHOW_DURATION = 800;  // How long each color stays lit (matches sound)
     const SHOW_GAP = 400;       // Gap between colors (all dark)
