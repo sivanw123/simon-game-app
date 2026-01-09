@@ -2,12 +2,13 @@
  * Backend Entry Point
  * 
  * Main server initialization file.
- * Will be implemented with Express + Socket.io
+ * Express + Socket.io server.
  */
 
-// Placeholder - will be implemented in next phase
-console.log('🎮 Simon Game Backend - Ready for development');
-
+export * from './app';
+export * from './server';
 export * from './services';
+export * from './controllers';
+export * from './websocket';
 export * from './utils';
 export * from './types';

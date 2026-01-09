@@ -34,12 +34,13 @@ export const avatarIdSchema = z
 
 /**
  * Game code validation schema
+ * Accepts lowercase (will be normalized to uppercase)
  */
 export const gameCodeSchema = z
   .string()
   .length(PLATFORM_CONSTANTS.GAME_CODE_LENGTH, 
     `Game code must be exactly ${PLATFORM_CONSTANTS.GAME_CODE_LENGTH} characters`)
-  .regex(/^[A-Z0-9]+$/, 'Game code must be uppercase alphanumeric');
+  .regex(/^[A-Za-z0-9]+$/, 'Game code must be alphanumeric');
 
 /**
  * Create session request schema
