@@ -65,7 +65,7 @@ const ColorButton: React.FC<ColorButtonProps> = ({ color, isActive, onClick, dis
       onClick={onClick}
       disabled={disabled}
       className={`
-        w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 
+        w-[min(40vw,140px)] h-[min(40vw,140px)] sm:w-44 sm:h-44 md:w-48 md:h-48 
         rounded-xl sm:rounded-2xl 
         transition-all duration-75 
         shadow-lg
@@ -177,7 +177,7 @@ export const SimonBoard: React.FC<SimonBoardProps> = ({
   };
   
   return (
-    <div className="game-area flex flex-col items-center gap-3 sm:gap-4 md:gap-6 w-full max-w-lg px-2">
+    <div className="game-area flex flex-col items-center gap-3 sm:gap-4 md:gap-6 w-full max-w-md px-4 sm:px-2">
       {/* Round Display */}
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
@@ -225,7 +225,7 @@ export const SimonBoard: React.FC<SimonBoardProps> = ({
       )}
       
       {/* Color Grid (2x2) */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 p-4 sm:p-5 md:p-6 bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl w-full">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 p-3 sm:p-5 md:p-6 bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl w-full">
         {/* Top Row: Red, Blue */}
         <ColorButton
           color="red"
