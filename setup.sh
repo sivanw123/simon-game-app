@@ -14,6 +14,14 @@ echo "   SIMON GAME - SETUP"
 echo "═══════════════════════════════════════════════════"
 echo ""
 
+# Kill any existing processes on our ports
+echo "🔪 Cleaning up existing processes..."
+lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+lsof -ti:5173 | xargs kill -9 2>/dev/null || true
+echo "   ✅ Ports 3000 and 5173 are now free"
+
+echo ""
+
 # Copy env files
 echo "📋 Setting up environment files..."
 
@@ -31,6 +39,10 @@ else
   echo "   ⏭️  frontend/.env already exists, skipping"
 fi
 
+# Clear extended attributes (fixes macOS permission issues)
+xattr -c .env 2>/dev/null || true
+xattr -c frontend/.env 2>/dev/null || true
+
 echo ""
 
 # Set npm registry (required for Wix internal network)
@@ -40,13 +52,17 @@ echo "   ✅ Registry set to: $(npm config get registry)"
 
 echo ""
 
-# Install dependencies
+# Clean and install dependencies
 echo "📦 Installing backend dependencies..."
+rm -rf node_modules/.cache 2>/dev/null || true
 npm install --silent
 
 echo ""
 echo "📦 Installing frontend dependencies..."
-cd frontend && npm install --silent && cd ..
+cd frontend
+rm -rf node_modules/.cache 2>/dev/null || true
+npm install --silent
+cd ..
 
 echo ""
 echo "🚀 Starting servers to verify setup..."
