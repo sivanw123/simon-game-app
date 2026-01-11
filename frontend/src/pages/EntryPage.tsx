@@ -39,19 +39,19 @@ const PolkadotBackground = () => (
   </div>
 );
 
-// Circular button component for home screen
+// Circular button component for home screen (vertical split - left/right)
 const HalfCircleButton = ({ 
   position, 
   onClick, 
   children 
 }: { 
-  position: 'top' | 'bottom'; 
+  position: 'left' | 'right'; 
   onClick: () => void; 
   children: React.ReactNode;
 }) => {
   const colors = {
-    top: { base: '#ec4899', hover: '#db2777' },      // Pink
-    bottom: { base: '#14b8a6', hover: '#0d9488' },   // Turquoise
+    left: { base: '#ec4899', hover: '#db2777' },      // Pink
+    right: { base: '#14b8a6', hover: '#0d9488' },     // Turquoise
   };
   
   const color = colors[position];
@@ -59,11 +59,11 @@ const HalfCircleButton = ({
   return (
     <button
       onClick={onClick}
-      className="w-full transition-all duration-200 font-bold text-white text-lg sm:text-xl shadow-lg active:scale-95"
+      className="h-full transition-all duration-200 font-bold text-white text-lg sm:text-xl shadow-lg active:scale-95 flex items-center justify-center"
       style={{
         backgroundColor: color.base,
-        height: '50%',
-        borderRadius: position === 'top' ? '999px 999px 0 0' : '0 0 999px 999px',
+        width: '50%',
+        borderRadius: position === 'left' ? '999px 0 0 999px' : '0 999px 999px 0',
         touchAction: 'manipulation',
       }}
       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = color.hover}
@@ -144,23 +144,23 @@ export function EntryPage() {
           
           {/* Circular game-like button container */}
           <div 
-            className="relative bg-gray-900 rounded-full shadow-2xl overflow-hidden flex flex-col"
+            className="relative bg-gray-900 rounded-full shadow-2xl overflow-hidden flex flex-row"
             style={{
               width: 'min(320px, 80vw)',
               height: 'min(320px, 80vw)',
               boxShadow: '0 0 60px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.2)',
             }}
           >
-            {/* Top half - Create Game (Pink) */}
-            <HalfCircleButton position="top" onClick={() => setMode('create')}>
+            {/* Left half - Create Game (Pink) */}
+            <HalfCircleButton position="left" onClick={() => setMode('create')}>
               Create Game
             </HalfCircleButton>
             
-            {/* Divider line */}
-            <div className="absolute left-0 right-0 top-1/2 h-1 bg-gray-900 z-10" />
+            {/* Vertical divider line */}
+            <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-gray-900 z-10" />
             
-            {/* Bottom half - Join Game (Turquoise) */}
-            <HalfCircleButton position="bottom" onClick={() => setMode('join')}>
+            {/* Right half - Join Game (Turquoise) */}
+            <HalfCircleButton position="right" onClick={() => setMode('join')}>
               Join Game
             </HalfCircleButton>
             
