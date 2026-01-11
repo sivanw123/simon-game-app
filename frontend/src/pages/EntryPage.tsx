@@ -50,8 +50,8 @@ const HalfCircleButton = ({
   children: React.ReactNode;
 }) => {
   const colors = {
-    left: { base: '#ec4899', hover: '#db2777' },      // Pink
-    right: { base: '#14b8a6', hover: '#0d9488' },     // Turquoise
+    left: { base: '#ec4899', hover: '#a855f7' },      // Pink -> Purple hover
+    right: { base: '#14b8a6', hover: '#a855f7' },     // Turquoise -> Purple hover
   };
   
   const color = colors[position];
@@ -157,24 +157,22 @@ export function EntryPage() {
               Start Game
             </HalfCircleButton>
             
-            {/* Vertical divider line */}
-            <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-gray-900 z-10" />
-            
             {/* Right half - Join Game (Turquoise) */}
             <HalfCircleButton position="right" onClick={() => setMode('join')}>
               Join Game
             </HalfCircleButton>
             
-            {/* Center circle decoration */}
+            {/* Center circle decoration - Yellow with purple heart */}
             <div 
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-full z-20 flex items-center justify-center"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-20 flex items-center justify-center"
               style={{
                 width: '60px',
                 height: '60px',
-                boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+                backgroundColor: '#fbbf24', // Yellow
+                boxShadow: '0 0 20px rgba(251,191,36,0.6)',
               }}
             >
-              <span className="text-2xl">✨</span>
+              <span className="text-2xl">💜</span>
             </div>
           </div>
         </div>
