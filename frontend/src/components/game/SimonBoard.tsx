@@ -44,10 +44,10 @@ const ColorButton: React.FC<ColorButtonProps> = ({ color, isActive, onClick, dis
   // Get inline styles for colors (Tailwind purges Record-based classes)
   const getButtonStyle = (buttonColor: Color, active: boolean) => {
     const colors = {
-      red: { base: '#ef4444', light: '#fca5a5', hover: '#dc2626' },
-      blue: { base: '#3b82f6', light: '#93c5fd', hover: '#2563eb' },
-      yellow: { base: '#facc15', light: '#fef08a', hover: '#eab308' },
-      green: { base: '#22c55e', light: '#86efac', hover: '#16a34a' },
+      red: { base: '#ec4899', light: '#f9a8d4', hover: '#db2777' },      // Pink
+      blue: { base: '#14b8a6', light: '#5eead4', hover: '#0d9488' },     // Turquoise
+      yellow: { base: '#a855f7', light: '#d8b4fe', hover: '#9333ea' },   // Purple
+      green: { base: '#d946ef', light: '#f0abfc', hover: '#c026d3' },    // Magenta
     };
     
     return {
@@ -169,10 +169,10 @@ export const SimonBoard: React.FC<SimonBoardProps> = ({
   // Get color emoji for display
   const getColorEmoji = (color: Color): string => {
     const emojis: Record<Color, string> = {
-      red: '🔴',
-      blue: '🔵',
-      yellow: '🟡',
-      green: '🟢',
+      red: '💗',      // Pink
+      blue: '💎',     // Turquoise
+      yellow: '💜',   // Purple
+      green: '🩷',    // Magenta
     };
     return emojis[color];
   };

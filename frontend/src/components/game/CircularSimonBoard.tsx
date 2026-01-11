@@ -99,10 +99,10 @@ const ColorWedge: React.FC<WedgeProps> = ({
 }) => {
   // DIMMED base colors (darker when inactive) and VERY BRIGHT when active
   const colors: Record<Color, { dim: string; bright: string }> = {
-    green: { dim: '#1a7a28', bright: '#44ff66' },  // Dark green -> Neon green
-    red: { dim: '#8b1a1a', bright: '#ff4444' },    // Dark red -> Bright red
-    yellow: { dim: '#8b7a00', bright: '#ffff00' }, // Dark yellow -> Pure yellow
-    blue: { dim: '#0a3d6b', bright: '#44aaff' },   // Dark blue -> Bright blue
+    green: { dim: '#86198f', bright: '#f0abfc' },  // Dark magenta -> Bright magenta
+    red: { dim: '#9d174d', bright: '#f9a8d4' },    // Dark pink -> Bright pink
+    yellow: { dim: '#6b21a8', bright: '#d8b4fe' }, // Dark purple -> Bright purple
+    blue: { dim: '#115e59', bright: '#5eead4' },   // Dark teal -> Bright turquoise
   };
 
   const wedgeColor = colors[color];
@@ -329,10 +329,10 @@ export const CircularSimonBoard: React.FC<CircularSimonBoardProps> = ({
   // Get color emoji
   const getColorEmoji = (color: Color): string => {
     const emojis: Record<Color, string> = {
-      red: '🔴',
-      blue: '🔵',
-      yellow: '🟡',
-      green: '🟢',
+      red: '💗',      // Pink
+      blue: '💎',     // Turquoise
+      yellow: '💜',   // Purple
+      green: '🩷',    // Magenta
     };
     return emojis[color];
   };
