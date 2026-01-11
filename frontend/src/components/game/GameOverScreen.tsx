@@ -137,15 +137,15 @@ export const GameOverScreen: React.FC<GameOverScreenProps> = ({
     const rank = finalScores.findIndex(s => s.playerId === currentPlayerId) + 1;
     
     const shareText = isSoloGame
-      ? `🎮 I reached Round ${roundsPlayed} in Simon Says with ${myScore} points! Can you beat my score?`
-      : `🏆 I finished #${rank} in Simon Says with ${myScore} points! ${isWinner ? '👑 WINNER!' : ''}`;
+      ? `🦄 I reached Round ${roundsPlayed} in Sivan Says with ${myScore} points! Can you beat my score?`
+      : `🏆 I finished #${rank} in Sivan Says with ${myScore} points! ${isWinner ? '👑 WINNER!' : ''}`;
     
     const shareUrl = `${window.location.origin}/?join=${gameCode}`;
     
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Simon Says Score',
+          title: 'Sivan Says Score',
           text: shareText,
           url: shareUrl,
         });

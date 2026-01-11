@@ -44,7 +44,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       <div className="flex flex-col items-center justify-center w-full h-full p-4">
         <img
           src="/splash.png"
-          alt="Simon's Sequence"
+          alt="Sivan's Sequence"
           className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain animate-pulse"
         />
       </div>

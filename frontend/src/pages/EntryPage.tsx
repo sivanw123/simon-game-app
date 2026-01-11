@@ -59,12 +59,13 @@ const HalfCircleButton = ({
   return (
     <button
       onClick={onClick}
-      className="h-full transition-all duration-200 font-bold text-white text-lg sm:text-xl shadow-lg active:scale-95 flex items-center justify-center"
+      className="h-full transition-all duration-200 font-bold text-sm sm:text-base shadow-lg active:scale-95 flex items-center justify-center px-2"
       style={{
         backgroundColor: color.base,
         width: '50%',
         borderRadius: position === 'left' ? '999px 0 0 999px' : '0 999px 999px 0',
         touchAction: 'manipulation',
+        color: '#ffc0cb', // Baby pink text
       }}
       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = color.hover}
       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = color.base}
@@ -137,9 +138,9 @@ export function EntryPage() {
           {/* Title above circle */}
           <div className="mb-6 text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-white drop-shadow-lg mb-2">
-              🎮 Simon Says
+              🦄 Sivan Says 🦄
             </h1>
-            <p className="text-white/90 text-lg sm:text-xl drop-shadow">Color Race Edition</p>
+            <p className="text-white/90 text-lg sm:text-xl drop-shadow">Unique colors for extra fun</p>
           </div>
           
           {/* Circular game-like button container */}
@@ -151,9 +152,9 @@ export function EntryPage() {
               boxShadow: '0 0 60px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.2)',
             }}
           >
-            {/* Left half - Create Game (Pink) */}
+            {/* Left half - Start Game (Pink) */}
             <HalfCircleButton position="left" onClick={() => setMode('create')}>
-              Create Game
+              Start Game
             </HalfCircleButton>
             
             {/* Vertical divider line */}
@@ -194,7 +195,7 @@ export function EntryPage() {
         </button>
         
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-          {mode === 'create' ? 'Create Game' : 'Join Game'}
+          {mode === 'create' ? 'Start Game' : 'Join Game'}
         </h2>
         
         <form onSubmit={mode === 'create' ? handleCreateGame : handleJoinGame} className="space-y-3 sm:space-y-4">
@@ -271,7 +272,7 @@ export function EntryPage() {
             className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 active:scale-98 disabled:from-gray-400 disabled:to-gray-400 text-white font-bold py-3 sm:py-4 px-6 rounded-xl transition-all duration-75 text-base sm:text-lg min-h-[56px]"
             style={{ touchAction: 'manipulation' }}
           >
-            {loading ? 'Loading...' : mode === 'create' ? 'Create Game' : 'Join Game'}
+            {loading ? 'Loading...' : mode === 'create' ? 'Start Game' : 'Join Game'}
           </button>
         </form>
       </div>

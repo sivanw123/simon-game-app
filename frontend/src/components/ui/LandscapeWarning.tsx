@@ -16,7 +16,7 @@ export function LandscapeWarning() {
           Please Rotate Your Device
         </h2>
         <p className="text-lg text-center px-6 text-white/80">
-          Simon Says works best in portrait mode
+          Sivan Says works best in portrait mode
         </p>
         <div className="text-4xl mt-4">
           🔄
